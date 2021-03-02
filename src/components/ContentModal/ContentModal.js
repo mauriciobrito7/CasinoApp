@@ -1,94 +1,42 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import "./ContentModal.scss";
 import Button from "@material-ui/core/Button";
 import UserContext from "../../context/User/UserContext";
 
 const ContentModal = ({ handleClose }) => {
   const { user, addBalance } = useContext(UserContext);
-  const [showMessage, setShowMessage] = useState(false);
+  const [slots, setSlots] = useState([1, 2, 3]);
+
   const [message, setMessage] = useState("");
-  const [valueOfSlots, setValueOfSlots] = useState({
-    slot1: 1,
-    slot2: 2,
-    slot3: 3,
-  });
+  const timeoutRef = useRef(null);
 
-  const getRandomArbitrary = (min, max) => {
-    return parseInt(Math.random() * (max - min) + min);
-  };
-
-  const resetSlots = () => {
-    setTimeout(() => {
-      setValueOfSlots({
-        slot1: 1,
-        slot2: 2,
-        slot3: 3,
-      });
-    }, 1000);
-  };
-
-  const hiddenMessage = () => {
-    setTimeout(() => {
-      setShowMessage(false);
-    }, 2000);
-  };
-
-  const luckyNumber = () => {
-    return (
-      valueOfSlots.slot1 === 7 &&
-      valueOfSlots.slot2 === 7 &&
-      valueOfSlots.slot3 === 7
-    );
-  };
-
-  const twoSlotsEquals = () => {
-    return (
-      valueOfSlots.slot1 === valueOfSlots.slot2 ||
-      valueOfSlots.slot1 === valueOfSlots.slot3 ||
-      valueOfSlots.slot2 === valueOfSlots.slot3
-    );
-  };
-
-  const threeSlotsEquals = () => {
-    return (
-      valueOfSlots.slot1 === valueOfSlots.slot2 &&
-      valueOfSlots.slot2 === valueOfSlots.slot3
-    );
-  };
-
-  const renderMessage = (amount) => {
-    addBalance(amount);
-    setMessage(`You Earned $${amount}`);
-    setShowMessage(() => true);
-    hiddenMessage();
-    resetSlots();
-  };
-
-  const playGame = () => {
-    setValueOfSlots({
-      slot1: getRandomArbitrary(1, 10),
-      slot2: getRandomArbitrary(1, 10),
-      slot3: getRandomArbitrary(1, 10),
-    });
-    if (luckyNumber()) {
-      renderMessage(10.0);
-    } else if (twoSlotsEquals()) {
-      renderMessage(0.5);
-    } else if (threeSlotsEquals()) {
-      renderMessage(5);
+  useEffect(() => {
+    switch (true) {
+      case luckyNumber():
+        if (user) {
+          addBalance(10);
+        }
+        showMessage("Congratz, lucky number!");
+        break;
+      case threeEquals():
+        if (user) {
+          addBalance(5);
+        }
+        showMessage("Wow, three equals!");
+        break;
+      case twoEquals():
+        if (user) {
+          addBalance(0.5);
+        }
+        showMessage(`You've got two equals number!`);
+        break;
+      default:
+        break;
     }
-  };
 
-  const debug = () => {
-    if (user) {
-      setValueOfSlots({
-        slot1: 7,
-        slot2: 7,
-        slot3: 7,
-      });
-      renderMessage(10.0);
-    }
-  };
+    return clearTimeout(timeoutRef);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slots]);
 
   return (
     <div className="content-modal">
@@ -101,22 +49,49 @@ const ContentModal = ({ handleClose }) => {
         </h1>
       </div>
       <div className="slots">
-        <div className="slot">{valueOfSlots.slot1}</div>
-        <div className="slot">{valueOfSlots.slot2}</div>
-        <div className="slot">{valueOfSlots.slot3}</div>
+        <div className="slot">{slots[0]}</div>
+        <div className="slot">{slots[1]}</div>
+        <div className="slot">{slots[2]}</div>
       </div>
-      {showMessage && (
-        <>
-          <span className="message">{message}</span>
-        </>
-      )}
+      <span className="message">{message}</span>
       <div className="buttons">
-        <Button onClick={playGame}>Play</Button>
-        <Button onClick={debug}>777 debug</Button>
+        <Button onClick={runSlotsMachine}>Play</Button>
+        <Button onClick={cheat}>777 debug</Button>
         <Button onClick={handleClose}>Exit</Button>
       </div>
     </div>
   );
+
+  function showMessage(message) {
+    setMessage(message);
+    timeoutRef.current = setTimeout(() => setMessage(""), 1000);
+  }
+
+  function runSlotsMachine() {
+    setSlots([random(), random(), random()]);
+
+    function random() {
+      return Math.trunc(Math.random() * 10);
+    }
+  }
+
+  function cheat() {
+    setSlots([7, 7, 7]);
+  }
+
+  function luckyNumber() {
+    return slots.every((slot) => slot === 7);
+  }
+
+  function twoEquals() {
+    const [one, two, three] = slots;
+    return one === two || one === three || two === three;
+  }
+
+  function threeEquals() {
+    const [one, two, three] = slots;
+    return one === two && one === three;
+  }
 };
 
 export default ContentModal;
