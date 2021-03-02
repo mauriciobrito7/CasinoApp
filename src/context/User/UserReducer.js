@@ -23,7 +23,10 @@ export default (state, action) => {
       };
     case ADD_BALANCE:
       return {
-        user: { ...state.user, balance: state.user.balance + payload },
+        user: {
+          ...state.user,
+          balance: Number.parseFloat(state.user.balance) + payload,
+        },
       };
     default:
       return state;

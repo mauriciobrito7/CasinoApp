@@ -3,14 +3,10 @@ import React, { useReducer } from "react";
 import UserContext from "./UserContext";
 import UserReducer from "./UserReducer";
 
-import { GET_PROFILE, SET_PROFILE, LOG_OUT, ADD_BALANCE } from "../types";
+import { SET_PROFILE, LOG_OUT, ADD_BALANCE } from "../types";
 
 const UserState = (props) => {
   const initialUser = JSON.parse(localStorage.getItem("activeUser")) || null;
-
-  if (initialUser) {
-    initialUser.balance = Number.parseInt(initialUser.balance);
-  }
 
   const initialState = {
     user: initialUser,
@@ -29,8 +25,7 @@ const UserState = (props) => {
   const addBalance = (amount) => {
     dispatch({ type: ADD_BALANCE, payload: amount });
     // localStorage.setItem("users", JSON.stringify(state.user));
-    console.log(state.user);
-    // localStorage.setItem("activeUser", JSON.stringify(state.user));
+    localStorage.setItem("activeUser", JSON.stringify(state.user));
   };
 
   const logOut = () => {

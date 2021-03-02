@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./ContentModal.scss";
 import Button from "@material-ui/core/Button";
 import UserContext from "../../context/User/UserContext";
@@ -33,59 +33,61 @@ const ContentModal = ({ handleClose }) => {
     }, 2000);
   };
 
-  const playGame = () => {
-    if (user) {
-      if (
-        valueOfSlots.slot1 === 7 &&
-        valueOfSlots.slot2 === 7 &&
-        valueOfSlots.slot3 === 7
-      ) {
-        addBalance(10);
-        setMessage("You Earned $10.00");
-        setShowMessage(() => true);
-        hiddenMessage();
-        resetSlots();
-      } else if (
-        valueOfSlots.slot1 === valueOfSlots.slot2 ||
-        valueOfSlots.slot1 === valueOfSlots.slot3 ||
-        valueOfSlots.slot2 === valueOfSlots.slot3
-      ) {
-        addBalance(0.5);
-        setMessage("You Earned $0.5");
-        setShowMessage(() => true);
-        hiddenMessage();
-        resetSlots();
-      } else if (
-        valueOfSlots.slot1 === valueOfSlots.slot2 &&
-        valueOfSlots.slot1 === valueOfSlots.slot3
-      ) {
-        addBalance(5);
-        setMessage("You Earned $5");
-        setShowMessage(() => true);
-        hiddenMessage();
-        resetSlots();
-      }
-    }
-    setValueOfSlots(() => {
-      return {
-        slot1: getRandomArbitrary(1, 10),
-        slot2: getRandomArbitrary(1, 10),
-        slot3: getRandomArbitrary(1, 10),
-      };
-    });
+  const luckyNumber = () => {
+    return (
+      valueOfSlots.slot1 === 7 &&
+      valueOfSlots.slot2 === 7 &&
+      valueOfSlots.slot3 === 7
+    );
   };
 
-  const debug = () => {
-    setValueOfSlots({
-      slot1: 7,
-      slot2: 7,
-      slot3: 7,
-    });
-    addBalance(10);
-    setMessage("You Earned $10.00");
+  const twoSlotsEquals = () => {
+    return (
+      valueOfSlots.slot1 === valueOfSlots.slot2 ||
+      valueOfSlots.slot1 === valueOfSlots.slot3 ||
+      valueOfSlots.slot2 === valueOfSlots.slot3
+    );
+  };
+
+  const threeSlotsEquals = () => {
+    return (
+      valueOfSlots.slot1 === valueOfSlots.slot2 &&
+      valueOfSlots.slot2 === valueOfSlots.slot3
+    );
+  };
+
+  const renderMessage = (amount) => {
+    addBalance(amount);
+    setMessage(`You Earned $${amount}`);
     setShowMessage(() => true);
     hiddenMessage();
     resetSlots();
+  };
+
+  const playGame = () => {
+    setValueOfSlots({
+      slot1: getRandomArbitrary(1, 10),
+      slot2: getRandomArbitrary(1, 10),
+      slot3: getRandomArbitrary(1, 10),
+    });
+    if (luckyNumber()) {
+      renderMessage(10.0);
+    } else if (twoSlotsEquals()) {
+      renderMessage(0.5);
+    } else if (threeSlotsEquals()) {
+      renderMessage(5);
+    }
+  };
+
+  const debug = () => {
+    if (user) {
+      setValueOfSlots({
+        slot1: 7,
+        slot2: 7,
+        slot3: 7,
+      });
+      renderMessage(10.0);
+    }
   };
 
   return (

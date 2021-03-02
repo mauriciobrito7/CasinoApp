@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import UserContext from "../../context/User/UserContext";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
@@ -13,7 +13,9 @@ const Header = () => {
   const balance = Number.parseFloat(0).toFixed(2);
 
   const login = () => {
-    userContext.setProfile(user);
+    if (user.name.length > 0) {
+      userContext.setProfile(user);
+    }
   };
 
   const logout = () => {

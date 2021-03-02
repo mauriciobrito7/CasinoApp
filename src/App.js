@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Header from "./components/Header/Header";
 import Layout from "./components/AppLayout/AppLayout";
-import Table from "@material-ui/core/Table";
 import Footer from "./components/Footer/Footer";
 import UserState from "./context/User/UserState";
 import "./App.scss";
@@ -9,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import Banner from "./assets/img/casino.jpg";
 import Modal from "@material-ui/core/Modal";
 import ContentModal from "./components/ContentModal/ContentModal";
+import Table from "./components/Table/Table";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ function App() {
               </Button>
             </section>
             <h2>Results</h2>
-            {/* <Table></Table> */}
+
             <Modal open={open} onClose={handleClose}>
               {<ContentModal handleClose={handleClose} />}
             </Modal>
