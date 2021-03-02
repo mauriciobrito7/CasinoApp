@@ -1,0 +1,14 @@
+@import "../../scss/config.scss";
+
+.footer {
+  width: 100%;
+  background: $background-dark;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  position: sticky;
+  bottom: 0;
+  top: calc(100% - 50px);
+  z-index: 2;
+}
