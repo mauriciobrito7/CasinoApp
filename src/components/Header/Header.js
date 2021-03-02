@@ -3,6 +3,7 @@ import UserContext from "../../context/User/UserContext";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import "./Header.scss";
+import Logo from "../Icons/Logo";
 
 const Header = () => {
   const userContext = useContext(UserContext);
@@ -28,7 +29,9 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="header-logo">Logo</div>
+      <div className="header-logo">
+        <Logo />
+      </div>
       <div className="header-user__info">
         <div className="balance">
           Your Balance: ${userContext.user?.balance || balance}
