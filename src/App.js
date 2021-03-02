@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import Banner from "./assets/img/casino.jpg";
 import Modal from "@material-ui/core/Modal";
 import ContentModal from "./components/ContentModal/ContentModal";
-import Table from "./components/Table/Table";
+// import Table from "./components/Table/Table";
 
 function App() {
   const [open, setOpen] = useState(false);
