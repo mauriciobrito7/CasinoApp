@@ -38,6 +38,7 @@ const ContentModal = ({ handleClose }) => {
     if (!timeoutRef.current) timeoutRef.current = undefined;
 
     return () => clearTimeout(timeoutRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slots]);
 
   return (
