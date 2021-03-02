@@ -22,7 +22,7 @@
     padding: 0.5em;
     background: $primary-color;
     @include from($large) {
-      width: 60% !important;
+      width: 50% !important;
     }
     &-title {
       position: absolute;

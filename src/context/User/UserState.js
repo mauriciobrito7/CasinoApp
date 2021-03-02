@@ -3,47 +3,57 @@ import React, { useReducer, useEffect } from "react";
 import UserContext from "./UserContext";
 import UserReducer from "./UserReducer";
 
-import { SET_PROFILE, LOG_OUT, ADD_BALANCE } from "../types";
+import { SET_PROFILE, LOG_OUT } from "../types";
 
 const UserState = (props) => {
-  const initialUser = JSON.parse(localStorage.getItem("activeUser")) || null;
+  const [state, dispatch] = useReducer(UserReducer, { user: undefined });
 
-  const initialState = {
-    user: initialUser,
-  };
-
-  const [state, dispatch] = useReducer(UserReducer, initialState);
-
+  //load current user
   useEffect(() => {
-    if (state) localStorage.setItem("activeUser", JSON.stringify(state.user));
-  }, [state]);
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser) dispatch({ type: SET_PROFILE, payload: currentUser });
+  }, []);
 
-  const getProfile = () => {};
+  //update local storage
+  useEffect(() => {
+    if (state.user)
+      localStorage.setItem("currentUser", JSON.stringify(state.user));
+  }, [state.user]);
 
-  const setProfile = (user) => {
-    // localStorage.setItem("users", JSON.stringify(user));
-    localStorage.setItem("activeUser", JSON.stringify(user));
+  function logIn(userName) {
+    const usersDB = JSON.parse(localStorage.getItem("usersDB")) || [];
+    const index = usersDB.findIndex((user) => user.name === userName);
+
+    var user = { name: userName, balance: 0, slotsMachineRecords: [] };
+
+    if (index !== -1) {
+      user = usersDB.splice(index, 1).pop();
+
+      user.slotsMachineRecords.forEach((record) => {
+        record.time = new Date(record.time);
+      });
+
+      localStorage.setItem("usersDB", JSON.stringify(usersDB));
+    }
+
     dispatch({ type: SET_PROFILE, payload: user });
-  };
+  }
 
-  const addBalance = (amount) => {
-    dispatch({ type: ADD_BALANCE, payload: amount });
-    // localStorage.setItem("users", JSON.stringify(state.user));
-  };
-
-  const logOut = () => {
-    localStorage.removeItem("activeUser");
+  function logOut() {
+    const usersDB = JSON.parse(localStorage.getItem("usersDB")) || [];
+    usersDB.push(state.user);
+    localStorage.setItem("usersDB", JSON.stringify(usersDB));
+    localStorage.removeItem("currentUser");
     dispatch({ type: LOG_OUT });
-  };
+  }
 
   return (
     <UserContext.Provider
       value={{
         user: state.user,
-        getProfile,
-        setProfile,
+        logIn,
         logOut,
-        addBalance,
+        dispatch,
       }}
     >
       {props.children}

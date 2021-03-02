@@ -7,24 +7,14 @@ import Logo from "../Icons/Logo";
 
 const Header = () => {
   const userContext = useContext(UserContext);
-  const [user, setUser] = useState({
-    name: "",
-    balance: Number.parseFloat(0).toFixed(2),
-  });
-  const balance = Number.parseFloat(0).toFixed(2);
+  const [userName, setUserName] = useState("");
 
   const login = () => {
-    if (user.name.length > 0) {
-      userContext.setProfile(user);
-    }
+    if (userName) userContext.logIn(userName);
   };
 
   const logout = () => {
     userContext.logOut();
-  };
-
-  const onChange = (e) => {
-    setUser({ ...user, name: e.target.value });
   };
 
   return (
@@ -34,7 +24,7 @@ const Header = () => {
       </div>
       <div className="header-user__info">
         <div className="balance">
-          Your Balance: ${userContext.user?.balance || balance}
+          Your Balance: ${userContext.user?.balance || 0}
         </div>
         <div className="avatar">{userContext.user?.name}</div>
         {userContext.user ? (
@@ -43,8 +33,8 @@ const Header = () => {
           <>
             <Input
               placeholder="Enter your name"
-              value={user.name}
-              onChange={onChange}
+              value={userName}
+              onChange={(event) => setUserName(event.target.value)}
             />
             <Button onClick={login}>Login</Button>
           </>

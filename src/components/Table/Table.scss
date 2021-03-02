@@ -1,0 +1,28 @@
+@import "../../scss/config.scss";
+
+.table {
+  width: 80% !important;
+  margin: 2em auto !important;
+  border-radius: 1em;
+  @include from($large) {
+    width: 50% !important;
+  }
+
+  .message {
+    text-align: center;
+    color: $primary-color;
+  }
+}
+
+.MuiDataGrid-root {
+  border: 2px solid $primary-color !important;
+}
+
+.MuiDataGrid-columnsContainer {
+  border-bottom: 1px solid $primary-color !important;
+}
+
+.MuiDataGrid-main,
+.MuiDataGrid-root .MuiDataGrid-footer {
+  background: white;
+}

@@ -1,41 +1,43 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 import "./ContentModal.scss";
 import Button from "@material-ui/core/Button";
 import UserContext from "../../context/User/UserContext";
+import { ADD_SLOTS_MACHINE_RECORD } from "../../context/types";
 
 const ContentModal = ({ handleClose }) => {
-  const { user, addBalance } = useContext(UserContext);
+  const { user, dispatch } = useContext(UserContext);
+
   const [slots, setSlots] = useState([1, 2, 3]);
 
   const [message, setMessage] = useState("");
+
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    switch (true) {
-      case luckyNumber():
-        if (user) {
-          addBalance(10);
-        }
-        showMessage("Congratz, lucky number!");
-        break;
-      case threeEquals():
-        if (user) {
-          addBalance(5);
-        }
-        showMessage("Wow, three equals!");
-        break;
-      case twoEquals():
-        if (user) {
-          addBalance(0.5);
-        }
-        showMessage(`You've got two equals number!`);
-        break;
-      default:
-        break;
-    }
+    if (timeoutRef.current !== null)
+      switch (true) {
+        case luckyNumber():
+          addRecord(10);
+          showMessage("Congratz, lucky number!");
+          break;
+        case threeEquals():
+          addRecord(5);
+          showMessage("Wow, three equals!");
+          break;
+        case twoEquals():
+          addRecord(0.5);
+          showMessage(`You've got a par!`);
+          break;
+        default:
+          addRecord(-1);
+          showMessage("Keep trying");
+      }
 
-    return clearTimeout(timeoutRef);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!timeoutRef.current) timeoutRef.current = undefined;
+
+    return () => clearTimeout(timeoutRef.current);
   }, [slots]);
 
   return (
@@ -62,8 +64,25 @@ const ContentModal = ({ handleClose }) => {
     </div>
   );
 
+  function addRecord(amount) {
+    if (user) {
+      dispatch({
+        type: ADD_SLOTS_MACHINE_RECORD,
+        payload: {
+          amount,
+          transaction: {
+            id: uuidv4(),
+            slots: [...slots],
+            time: new Date(),
+          },
+        },
+      });
+    }
+  }
+
   function showMessage(message) {
     setMessage(message);
+    clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => setMessage(""), 1000);
   }
 

@@ -3,3 +3,4 @@ export const SET_PROFILE = "SET_PROFILE";
 export const ADD_BALANCE = "ADD_BALANCE";
 export const GET_BALANCE = "BALANCE_PROFILE";
 export const LOG_OUT = "LOG_OUT";
+export const ADD_SLOTS_MACHINE_RECORD = "ADD_SLOTS_MACHINE_RECORD";
