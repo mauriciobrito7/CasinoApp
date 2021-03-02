@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import Banner from "./assets/img/casino.jpg";
 import Modal from "@material-ui/core/Modal";
 import ContentModal from "./components/ContentModal/ContentModal";
-// import Table from "./components/Table/Table";
+import Table from "./components/Table/Table";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -25,19 +25,20 @@ function App() {
       <UserState>
         <Header />
         <Layout>
-          <main>
+          <main className="main">
             <section className="banner">
               <div
                 style={{ backgroundImage: `url('${Banner}')` }}
                 className="banner-img"
               ></div>
               <div className="banner-img__gradient" />
+              <h1 className="banner-title">Virtual Game</h1>
               <Button onClick={handleOpen} className="banner-button">
                 Try it
               </Button>
             </section>
-            <h2>Results</h2>
-
+            <h1 className="main-title">Results</h1>
+            <Table />
             <Modal open={open} onClose={handleClose}>
               {<ContentModal handleClose={handleClose} />}
             </Modal>
