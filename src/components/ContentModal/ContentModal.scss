@@ -1,0 +1,58 @@
+@import "../../scss/config.scss";
+
+.content-modal {
+  background: $background;
+  width: 90vh;
+  height: 80vh;
+  border-radius: 1em;
+  margin: 5em auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  &__title {
+    text-align: center;
+    .user {
+      font-size: 1em;
+    }
+  }
+
+  .slots {
+    width: 80%;
+    height: 40%;
+    margin: 0 auto;
+    background: $primary-color;
+    display: flex;
+    border-radius: 2em;
+    font-size: 4em;
+
+    .slot {
+      display: flex;
+      height: 100%;
+      width: 33%;
+      border-radius: 1em;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-right: 4px solid $background;
+    }
+    .slot:last-child {
+      border-right: 0px;
+    }
+  }
+  .message {
+    text-align: center;
+  }
+  .buttons {
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    .MuiButtonBase-root {
+      font-size: 1em;
+      background: $primary-color;
+      color: white;
+      width: 30%;
+    }
+  }
+}
