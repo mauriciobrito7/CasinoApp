@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 
 import UserContext from "./UserContext";
 import UserReducer from "./UserReducer";
@@ -14,6 +14,10 @@ const UserState = (props) => {
 
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
+  useEffect(() => {
+    if (state) localStorage.setItem("activeUser", JSON.stringify(state.user));
+  }, [state]);
+
   const getProfile = () => {};
 
   const setProfile = (user) => {
@@ -25,7 +29,6 @@ const UserState = (props) => {
   const addBalance = (amount) => {
     dispatch({ type: ADD_BALANCE, payload: amount });
     // localStorage.setItem("users", JSON.stringify(state.user));
-    localStorage.setItem("activeUser", JSON.stringify(state.user));
   };
 
   const logOut = () => {
