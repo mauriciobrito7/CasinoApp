@@ -1,0 +1,7 @@
+@import "../../scss/config.scss";
+
+.appLayout {
+  @include from($small) {
+    width: 100%;
+  }
+}
