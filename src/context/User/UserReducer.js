@@ -40,9 +40,7 @@ export default (state, action) => {
         ...state,
         user: {
           ...state.user,
-          balance: state.user
-            ? Number.parseFloat(state.user.balance) + payload.amount
-            : Number.parseFloat(state.user.balance) + 0,
+          balance: Number.parseFloat(state.user.balance) + payload.amount,
           slotsMachineRecords: [
             ...(state.user?.slotsMachineRecords || []),
             payload.transaction,
