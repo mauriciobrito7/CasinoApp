@@ -26,3 +26,12 @@
 .MuiDataGrid-root .MuiDataGrid-footer {
   background: white;
 }
+
+.MuiDataGrid-window {
+  &::-webkit-scrollbar-thumb {
+    background-color: $background !important;
+  }
+  &::-webkit-scrollbar {
+    background-color: $primary-color !important;
+  }
+}

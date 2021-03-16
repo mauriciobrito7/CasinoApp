@@ -5,8 +5,8 @@ import "./Table.scss";
 
 const columns = [
   { field: "id", headerName: "ID", width: 400 },
-  { field: "slots", headerName: "First name", width: 150 },
-  { field: "time", headerName: "Last name", width: 400 },
+  { field: "slots", headerName: "Slots", width: 150 },
+  { field: "time", headerName: "Time", width: 400 },
 ];
 
 export default function Table() {

@@ -2,13 +2,21 @@
 
 .content-modal {
   background: $background;
-  width: 90vh;
-  height: 80vh;
+  width: 90%;
+  height: 80%;
   border-radius: 1em;
   margin: 5em auto;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  @include from($medium) {
+    width: 70%;
+    height: 60%;
+  }
+  @include from($large) {
+    width: 50%;
+    height: 80%;
+  }
 
   &__title {
     text-align: center;
